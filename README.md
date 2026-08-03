@@ -1,3 +1,4 @@
+
 # DSAtrail — DSA Visualizer (MERN)
 
 A full MERN app for learning data structures & algorithms through synced,
