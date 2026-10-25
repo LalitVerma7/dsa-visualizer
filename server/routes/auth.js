@@ -6,7 +6,7 @@ import protect from "../middleware/auth.js";
 const router = express.Router();
 
 const signToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
 // @route   POST /api/auth/signup
 router.post("/signup", async (req, res) => {

@@ -54,6 +54,33 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const WEEK = 7 * 24 * 60 * 60 * 1000;
+
+  useEffect(() => {
+    if (!user) return undefined;
+
+    // Logged in again after a long break? Log out.
+    const last = Number(localStorage.getItem("lastActive") || 0);
+    if (last && Date.now() - last > WEEK) {
+      logout();
+      return undefined;
+    }
+
+    // Record activity at most once a minute.
+    let t = 0;
+    const mark = () => {
+      const now = Date.now();
+      if (now - t > 60000) {
+        t = now;
+        localStorage.setItem("lastActive", String(now));
+      }
+    };
+    mark();
+    const events = ["click", "keydown", "scroll", "mousemove"];
+    events.forEach((e) => window.addEventListener(e, mark));
+    return () => events.forEach((e) => window.removeEventListener(e, mark));
+  }, [user]);
+
   return (
     <AuthContext.Provider value={{ user, loading, authError, signup, login, logout }}>
       {children}
