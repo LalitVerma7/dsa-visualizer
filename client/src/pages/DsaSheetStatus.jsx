@@ -91,7 +91,7 @@ export default function DsaSheetStatus() {
                 className={`cursor-pointer rounded px-2 py-1 text-sm capitalize ${selectStyle[statusOf(q)]}`}
               >
                 {STATUSES.map((s) => (
-                  <option key={s} value={s} className="bg-ink-800 text-ink-50">
+                  <option key={s} value={s} style={{ backgroundColor: "#1e293b", color: "#ffffff" }}>
                     {s}
                   </option>
                 ))}
