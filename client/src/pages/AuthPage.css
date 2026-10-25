@@ -490,3 +490,34 @@
   margin-top: 8px;
   opacity: 0.85;
 }
+
+/* Keep the input transparent when the browser autofills a saved login
+   (Chrome would otherwise paint it light blue / white). */
+.auth-page .field-wrapper input:-webkit-autofill,
+.auth-page .field-wrapper input:-webkit-autofill:hover,
+.auth-page .field-wrapper input:-webkit-autofill:focus,
+.auth-page .field-wrapper input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff;
+  caret-color: #fff;
+  transition: background-color 600000s ease-in-out 0s, color 600000s ease-in-out 0s;
+}
+
+/* Show / hide password button */
+.auth-page .field-wrapper .toggle-eye {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #fff;
+}
+
+.auth-page .field-wrapper input:focus ~ .toggle-eye,
+.auth-page .field-wrapper input:valid ~ .toggle-eye,
+.auth-page .field-wrapper .toggle-eye:hover {
+  color: var(--accent);
+}

@@ -33,20 +33,47 @@ const ICONS = {
       <path d="M8 11V8a4 4 0 0 1 8 0v3" />
     </svg>
   ),
+  eye: (
+    <svg {...svgProps}>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ),
+  eyeOff: (
+    <svg {...svgProps}>
+      <path d="M17.9 17.9A10.4 10.4 0 0 1 12 19c-6.5 0-10-7-10-7a17.5 17.5 0 0 1 4.1-4.9M9.9 5.2A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a17.6 17.6 0 0 1-2.2 3.2" />
+      <path d="M14.1 14.1a3 3 0 1 1-4.2-4.2" />
+      <path d="m3 3 18 18" />
+    </svg>
+  ),
 };
 
 function Field({ type, label, value, onChange, icon, autoComplete }) {
+  const [show, setShow] = useState(false);
+  const isPassword = type === "password";
+
   return (
     <div className="field-wrapper slide-element">
       <input
-        type={type}
+        type={isPassword && show ? "text" : type}
         required
         value={value}
         autoComplete={autoComplete}
         onChange={(e) => onChange(e.target.value)}
       />
       <label>{label}</label>
-      <i>{ICONS[icon]}</i>
+      {isPassword ? (
+        <button
+          type="button"
+          className="toggle-eye"
+          onClick={() => setShow((v) => !v)}
+          aria-label={show ? "Hide password" : "Show password"}
+        >
+          {show ? ICONS.eyeOff : ICONS.eye}
+        </button>
+      ) : (
+        <i>{ICONS[icon]}</i>
+      )}
     </div>
   );
 }
