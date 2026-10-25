@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
     try {
       const res = await api.post("/auth/signup", { name, email, password });
       localStorage.setItem("dsav_token", res.data.token);
+      localStorage.setItem("lastActive", String(Date.now()));
       setUser(res.data.user);
       return true;
     } catch (err) {
@@ -41,6 +42,7 @@ export function AuthProvider({ children }) {
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("dsav_token", res.data.token);
+      localStorage.setItem("lastActive", String(Date.now()));
       setUser(res.data.user);
       return true;
     } catch (err) {
@@ -51,6 +53,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => {
     localStorage.removeItem("dsav_token");
+    localStorage.removeItem("lastActive");
     setUser(null);
   }, []);
 

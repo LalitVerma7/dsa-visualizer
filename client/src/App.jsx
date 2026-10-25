@@ -4,13 +4,12 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Home from "./pages/Home.jsx";
 import Topics from "./pages/Topics.jsx";
 import AlgorithmPage from "./pages/AlgorithmPage.jsx";
-import Login from "./pages/Login.jsx";
-import Signup from "./pages/Signup.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import DsaSheet from "./pages/DsaSheet";
 import DsaSheetTopic from "./pages/DsaSheetTopic";
 import DsaSheetQuestions from "./pages/DsaSheetQuestions";
 import DsaSheetStatus from "./pages/DsaSheetStatus.jsx";
+import AuthPage from "./pages/AuthPage.jsx";
 
 export default function App() {
   return (
@@ -20,8 +19,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/topics" element={<Topics />} />
         <Route path="/topics/:category/:slug" element={<AlgorithmPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<AuthPage mode="login" />} />
+        <Route path="/signup" element={<AuthPage mode="signup" />} />
         <Route
           path="/dashboard"
           element={
