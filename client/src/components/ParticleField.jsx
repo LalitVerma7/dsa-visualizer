@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
 
-// Soft purple dots that drift upwards behind the hero section.
-export default function ParticleField({ count = 45 }) {
+// Soft purple dots that drift upwards. Used once in App.jsx as a fixed
+// full-screen background, so every page gets the effect.
+export default function ParticleField({
+  count,
+  className = "pointer-events-none absolute inset-0 h-full w-full",
+}) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -26,7 +30,8 @@ export default function ParticleField({ count = 45 }) {
       vx: (Math.random() - 0.5) * 0.2,
       o: Math.random() * 0.5 + 0.1,
     });
-    const dots = Array.from({ length: count }, make);
+    const total = count ?? (window.innerWidth < 640 ? 25 : 45); // fewer dots on phones
+    const dots = Array.from({ length: total }, make);
 
     const tick = () => {
       ctx.clearRect(0, 0, w, h);
@@ -49,5 +54,5 @@ export default function ParticleField({ count = 45 }) {
     };
   }, [count]);
 
-  return <canvas ref={ref} className="pointer-events-none absolute inset-0 h-full w-full" />;
+  return <canvas ref={ref} className={className} aria-hidden="true" />;
 }

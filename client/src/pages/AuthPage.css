@@ -521,3 +521,6 @@
 .auth-page .field-wrapper .toggle-eye:hover {
   color: var(--accent);
 }
+.auth-page {
+  background: transparent;
+}

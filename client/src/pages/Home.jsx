@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import HeroVisualizer from "../components/HeroVisualizer.jsx";
-import ParticleField from "../components/ParticleField.jsx";
 
 export default function Home() {
   return (
     <div className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-grid bg-grid opacity-40" />
       <div className="pointer-events-none absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-signal-purple/20 blur-[140px]" />
-      <ParticleField />
 
       <section className="relative mx-auto flex max-w-5xl flex-col items-center px-6 pb-20 pt-24 text-center sm:pt-32">
         <span className="animate-float mb-6 inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-850 px-4 py-1.5 font-mono text-xs text-signal-purple">
