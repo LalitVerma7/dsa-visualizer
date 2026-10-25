@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import api from "../api/axios"; // same axios instance the rest of the app uses
+import api from "../api/axios";
+import { useAuth } from "../context/AuthContext.jsx";
 
-const LS_KEY = "dsaSheetProgress";
-
-const readLocal = () => {
+const readLocal = (key) => {
   try {
-    return JSON.parse(localStorage.getItem(LS_KEY)) || {};
+    return JSON.parse(localStorage.getItem(key)) || {};
   } catch {
     return {};
   }
@@ -14,36 +13,46 @@ const readLocal = () => {
 /**
  * progress = { [questionId]: "pending" | "completed" | "review" }
  * Missing id means "pending".
- * Works offline / logged-out via localStorage; syncs to the API when it can.
+ * Logged in  -> loaded from / saved to the database for THIS user
+ *               (local copy is cached per user id for instant display).
+ * Logged out -> guest progress, kept only in this browser.
  */
 export default function useSheetProgress() {
-  const [progress, setProgress] = useState(readLocal);
+  const { user } = useAuth();
+  const uid = user?._id || user?.id || user?.email || null;
+  const lsKey = uid ? `dsaSheetProgress:${uid}` : "dsaSheetProgress:guest";
+
+  const [progress, setProgress] = useState(() => readLocal(lsKey));
 
   useEffect(() => {
+    setProgress(readLocal(lsKey)); // switch instantly when the user changes
+    if (!uid) return undefined;
+
     let cancelled = false;
     api
       .get("/sheet/progress")
       .then((res) => {
         if (cancelled) return;
         setProgress(res.data);
-        localStorage.setItem(LS_KEY, JSON.stringify(res.data));
+        localStorage.setItem(lsKey, JSON.stringify(res.data));
       })
-      .catch(() => {
-        /* not logged in or server down -> keep local copy */
-      });
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [uid, lsKey]);
 
-  const setStatus = useCallback((questionId, status) => {
-    setProgress((prev) => {
-      const next = { ...prev, [questionId]: status };
-      localStorage.setItem(LS_KEY, JSON.stringify(next));
-      return next;
-    });
-    api.post("/sheet/progress", { questionId, status }).catch(() => {});
-  }, []);
+  const setStatus = useCallback(
+    (questionId, status) => {
+      setProgress((prev) => {
+        const next = { ...prev, [questionId]: status };
+        localStorage.setItem(lsKey, JSON.stringify(next));
+        return next;
+      });
+      if (uid) api.post("/sheet/progress", { questionId, status }).catch(() => {});
+    },
+    [uid, lsKey]
+  );
 
-  return { progress, setStatus };
+  return { progress, setStatus, loggedIn: !!uid };
 }
