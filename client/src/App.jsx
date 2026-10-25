@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import DsaSheet from "./pages/DsaSheet";
 import DsaSheetTopic from "./pages/DsaSheetTopic";
 import DsaSheetQuestions from "./pages/DsaSheetQuestions";
+import DsaSheetStatus from "./pages/DsaSheetStatus.jsx";
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/dsa-sheet" element={<DsaSheet />} />
         <Route path="/dsa-sheet/:topic" element={<DsaSheetTopic />} />
         <Route path="/dsa-sheet/:topic/:level" element={<DsaSheetQuestions />} />
+        <Route path="/dsa-sheet/status/:status" element={<DsaSheetStatus />} />
       </Routes>
     </div>
   );

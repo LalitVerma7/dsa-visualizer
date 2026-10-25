@@ -10,12 +10,15 @@ const levelText = {
   hard: "text-signal-coral",
 };
 
-function Stat({ label, value, className = "" }) {
+function Stat({ label, value, to, className = "" }) {
   return (
-    <div className="rounded-xl border border-ink-700 bg-ink-900 px-4 py-3">
+    <Link
+      to={to}
+      className="rounded-xl border border-ink-700 bg-ink-900 px-4 py-3 transition hover:border-signal-purple"
+    >
       <p className={`font-display text-2xl font-semibold ${className}`}>{value}</p>
-      <p className="text-xs text-ink-400">{label}</p>
-    </div>
+      <p className="text-xs text-ink-400">{label} →</p>
+    </Link>
   );
 }
 
@@ -47,9 +50,9 @@ function ProgressReport({ progress, loggedIn }) {
       </div>
 
       <div className="mt-5 grid grid-cols-3 gap-3">
-        <Stat label="Completed" value={completed} className="text-signal-mint" />
-        <Stat label="Review" value={review} className="text-signal-sky" />
-        <Stat label="Pending" value={pending} className="text-ink-200" />
+        <Stat label="Completed" value={completed} to="/dsa-sheet/status/completed" className="text-signal-mint" />
+        <Stat label="Review" value={review} to="/dsa-sheet/status/review" className="text-signal-sky" />
+        <Stat label="Pending" value={pending} to="/dsa-sheet/status/pending" className="text-ink-200" />
       </div>
 
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
