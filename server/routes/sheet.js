@@ -1,5 +1,5 @@
 import express from "express";
-import auth from "../middleware/auth.js";
+import auth from "../middleware/auth.js"; // if your file uses a named export: import { auth } from ...
 import SheetProgress from "../models/SheetProgress.js";
 
 const router = express.Router();
@@ -35,6 +35,16 @@ router.post("/progress", auth, async (req, res) => {
     res.json({ questionId: doc.questionId, status: doc.status });
   } catch (err) {
     res.status(500).json({ message: "Failed to save sheet progress" });
+  }
+});
+
+// DELETE /api/sheet/progress -> wipes this user's sheet progress
+router.delete("/progress", auth, async (req, res) => {
+  try {
+    await SheetProgress.deleteMany({ user: getUserId(req) });
+    res.json({ message: "Sheet progress reset" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to reset sheet progress" });
   }
 });
 

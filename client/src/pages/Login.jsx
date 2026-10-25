@@ -13,7 +13,7 @@ export default function Login() {
     setSubmitting(true);
     const ok = await login(form);
     setSubmitting(false);
-    if (ok) navigate("/topics");
+    if (ok) navigate("/");
   };
 
   return (

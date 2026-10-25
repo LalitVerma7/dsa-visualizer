@@ -54,5 +54,11 @@ export default function useSheetProgress() {
     [uid, lsKey]
   );
 
-  return { progress, setStatus, loggedIn: !!uid };
+  const resetProgress = useCallback(() => {
+    setProgress({});
+    localStorage.setItem(lsKey, "{}");
+    if (uid) api.delete("/sheet/progress").catch(() => {});
+  }, [uid, lsKey]);
+
+  return { progress, setStatus, resetProgress, loggedIn: !!uid };
 }

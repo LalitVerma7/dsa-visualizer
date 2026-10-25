@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LEVELS, SHEET_TOPICS } from "../data/dsaSheet";
 import useSheetProgress from "../hooks/useSheetProgress";
@@ -22,7 +23,8 @@ function Stat({ label, value, to, className = "" }) {
   );
 }
 
-function ProgressReport({ progress, loggedIn }) {
+function ProgressReport({ progress, loggedIn, onReset }) {
+  const [confirming, setConfirming] = useState(false);
   const total = ALL.length;
   const count = (s) => ALL.filter((q) => progress[q.id] === s).length;
   const completed = count("completed");
@@ -76,6 +78,40 @@ function ProgressReport({ progress, loggedIn }) {
         })}
       </div>
 
+      {completed + review > 0 && (
+        <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-ink-700 pt-4">
+          {confirming ? (
+            <>
+              <span className="text-sm text-ink-300">
+                Reset all progress? This can&apos;t be undone.
+              </span>
+              <button
+                onClick={() => {
+                  onReset();
+                  setConfirming(false);
+                }}
+                className="rounded-lg bg-signal-coral px-3 py-1.5 text-sm font-medium text-ink-950 transition hover:brightness-110"
+              >
+                Yes, reset
+              </button>
+              <button
+                onClick={() => setConfirming(false)}
+                className="rounded-lg border border-ink-600 px-3 py-1.5 text-sm text-ink-200 transition hover:text-ink-50"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setConfirming(true)}
+              className="rounded-lg border border-ink-600 px-3 py-1.5 text-sm text-ink-200 transition hover:border-signal-coral hover:text-signal-coral"
+            >
+              Reset progress
+            </button>
+          )}
+        </div>
+      )}
+
       {!loggedIn && (
         <p className="mt-5 text-sm text-ink-400">
           <Link to="/login" className="text-signal-purple hover:underline">
@@ -89,14 +125,14 @@ function ProgressReport({ progress, loggedIn }) {
 }
 
 export default function DsaSheet() {
-  const { progress, loggedIn } = useSheetProgress();
+  const { progress, loggedIn, resetProgress } = useSheetProgress();
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
       <h1 className="font-display text-3xl font-semibold text-ink-50">DSA Sheet</h1>
       <p className="mb-8 mt-1 text-ink-400">Pick a topic to start practising.</p>
 
-      <ProgressReport progress={progress} loggedIn={loggedIn} />
+      <ProgressReport progress={progress} loggedIn={loggedIn} onReset={resetProgress} />
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {SHEET_TOPICS.map((topic) => {
