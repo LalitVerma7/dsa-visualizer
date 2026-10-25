@@ -27,6 +27,9 @@ export default function Navbar() {
           <NavLink to="/topics" className={linkClass}>
             Topics
           </NavLink>
+          <NavLink to="/dsa-sheet" className={linkClass}>
+            DSA Sheet
+          </NavLink>
           {user && (
             <NavLink to="/dashboard" className={linkClass}>
               Dashboard

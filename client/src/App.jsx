@@ -7,6 +7,9 @@ import AlgorithmPage from "./pages/AlgorithmPage.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import DsaSheet from "./pages/DsaSheet";
+import DsaSheetTopic from "./pages/DsaSheetTopic";
+import DsaSheetQuestions from "./pages/DsaSheetQuestions";
 
 export default function App() {
   return (
@@ -34,6 +37,9 @@ export default function App() {
             </div>
           }
         />
+        <Route path="/dsa-sheet" element={<DsaSheet />} />
+        <Route path="/dsa-sheet/:topic" element={<DsaSheetTopic />} />
+        <Route path="/dsa-sheet/:topic/:level" element={<DsaSheetQuestions />} />
       </Routes>
     </div>
   );

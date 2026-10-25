@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import progressRoutes from "./routes/progress.js";
+import sheetRoutes from "./routes/sheet.js";
 
 dotenv.config();
 connectDB();
@@ -23,6 +24,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/progress", progressRoutes);
+app.use("/api/sheet", sheetRoutes);
 
 // 404 handler
 app.use((req, res) => {
